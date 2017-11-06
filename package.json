@@ -1,0 +1,24 @@
+{
+  "name": "ASI-2-Node",
+  "version": "1.0.0",
+  "description": "Partie Node du projet",
+  "main": "app.js",
+  "scripts": {
+    "test": "node testContentModel.js",
+    "start": "node app.js"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxenceRoyer/CPE_ASI_Node.git"
+  },
+  "author": "maxence.royer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxenceRoyer/CPE_ASI_Node/issues"
+  },
+  "homepage": "https://github.com/MaxenceRoyer/CPE_ASI_Node#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
