@@ -53,7 +53,7 @@
   ```console
   npm start
   ```
-  
+
   #### Point de validation 1
 
 6. Initialiser express
@@ -108,9 +108,9 @@
   var express = require("express");
   var router = express.Router();
   module.exports = router;
-  
+
   // TODO : Routing using
-  
+
   router.route(__PATH__)
     .get(function(request, response){...})
     .post(function(request, response){...})
@@ -118,7 +118,7 @@
     .delete(function(request, response){...})
     .all(function(request, response){...})
     .[...]
-  
+
   ```
 
   - Dans _app.js_, on importe la nouvelle route et on l'utilise avec `app.use(myRoute)`. On peut également passer comme premier argument le chemin d'accès de la route (`app.use([URI], myRoute)`). Dans ce cas, les chemins indiqués dans le routeur sont alors relatifs.
@@ -163,7 +163,7 @@
 
 13. Créer les webservices _"/loadPres"_ et _"/savePres"_.
   Ces 2 services sont créés soit dans _app.js_ soit dans un routeur séparé (_presentation.route.js_).
-  
+
   13.1. Le service "_/loadPres_".
     Ce service doit envoyer la liste de toutes les présentations présentes dans le répertoire _CONFIG.presentationDirectory_.
     Pour ce service, on lit le contenu de tous les fichiers `*.json` de présentation contenus dans _CONFIG.presentationDirectory_, on parse le contenu des fichiers pour extraire les données et on retourne un objet JSON au format "clé-valeur". La clé est l'ID de la présentation et la valeur est l'objet retourné par le parseur JSON.
@@ -210,12 +210,12 @@
 
   #### Point de validation 4
 
-15. Créer le router pour exposer les web services REST d'accès au contenu (_content.router.js_). 
+15. Créer le router pour exposer les web services REST d'accès au contenu (_content.router.js_).
   Ce routeur ne comporte pas de métier, il se contente d'appeler le controleur  avec les bons paramètres.
   Ajouter ce router à _app.js_ (comme pour le _default.route.js_).
 
   > #### Tuto
-  > 
+  >
   > Pour avoir des WS RESTful, on utilise les verbes HTTP (GET, POST, PUT, DELETE) pour déterminer quel action doit être effectuée et les URI doivent permettre d'identifier directement sur quel ressource on doit effectuer l'action.
   > Par exemple, une adresse possible pour accéder à un annuaire est: `http://MyService/users/1`.
   > L'URI est donc de la forme `Protocol://ServiceName/ResourceType/ResourceID`.
@@ -259,9 +259,9 @@
   // content.route.js
   var multer = require("multer");
   var express = require("express");
-  
+
   var contentController = require('./../controllers/content.controller');
-  
+
   var router = express.Router();
   module.exports = router;
 
@@ -295,7 +295,7 @@
     - type : ['img', 'img_url', 'video', 'web']
     - title : le titre du contenu
     - file : le fichier à uploader sur le server dans le cas où le type est 'img'
-    - src : la source du contenu dans le cas où le type n'est pas 'img' 
+    - src : la source du contenu dans le cas où le type n'est pas 'img'
   - **read**: Lit le contenu dont l'id est passé en paramètre et:
     - soit retourne les données (_content.getData()_) dans le cas où les données sont hébergées sur le serveur (c'est-à-dire dans le cas où le type de contenu est 'img'). Express permet de faire directement un envoie de fichier avec la méthode `response.sendFile(...)`
     - soit effectue une redirection vers _content.src_ dans le cas où les données ne sont pas stockées sur le serveur.
@@ -328,7 +328,7 @@
   ```
 
   Pour les commandes START, END, BEGIN, PREV et NEXT, on récupère et on envoie les métadonnées du contenu de la slide que l'on doit diffuser à toutes les sockets connectées (penser à passer par _ContentModel_ pour lire les métadonnées).
-  
+
   #### Point de validation 7
 
 18. Gérer les évènements côté clients en utilisant un controleur dédié.
