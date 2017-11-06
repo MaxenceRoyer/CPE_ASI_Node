@@ -1,1 +1,3 @@
-'use strict';
+{
+  "port": 1337
+}
