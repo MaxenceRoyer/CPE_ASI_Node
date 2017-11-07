@@ -1,3 +1,5 @@
 {
-  "port": 1337
+  "port": 1337,
+  "contentDirectory": "./content",
+  "presentationDirectory": "./presentation"
 }
