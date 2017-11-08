@@ -10,15 +10,16 @@ var multerMiddleware = multer({ "dest": "/tmp/" })
 
 // Get all contents
 router.route("/contents")
-  .get(contentController.getAll);
+  .get(contentController.list);
 
 // Create
 router.post("/contents", multerMiddleware.single(file), contentController.create);
 
-// Get a specific content 
+// Get a specific content
 router.route("/contents/:contentId")
-  .post(contentController.create);
+  .get(contentController.read);
 
+// Recover the contentId of the request
 router.param("contendId", function(req, res, next, id) {
   req.contendId = id;
   next();
