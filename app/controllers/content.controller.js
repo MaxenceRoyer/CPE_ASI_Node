@@ -1,6 +1,6 @@
 "use strict";
 
-class ContentController() {
+/**class ContentController() {
   var contentModel;
 
   constructor() {
@@ -18,4 +18,4 @@ class ContentController() {
   read() {
     // TO_DO
   }
-}
+}*/

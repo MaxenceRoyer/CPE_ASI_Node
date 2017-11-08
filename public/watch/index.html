@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=7; IE=8; IE=9; IE=10; IE=11; IE=edge;" />
+    <link href="./lib/bootstrapv4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./index.css" rel="stylesheet">
+    <title>Watch</title>
+    <!-- Inclusion de socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.emit("data_comm", "");
+    </script>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-xs-12 text_align_center">
+        <h1>Watch</h1>
+        <br />
+      </div>
+    </div>
+  </body>
+</html>

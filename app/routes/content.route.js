@@ -1,4 +1,4 @@
-'use strict';
+/**'use strict';
 var multer = require("multer");
 var express = require("express");
 var router = express.Router();
@@ -23,4 +23,4 @@ router.route("/contents/:contentId")
 router.param("contendId", function(req, res, next, id) {
   req.contendId = id;
   next();
-});
+});*/
