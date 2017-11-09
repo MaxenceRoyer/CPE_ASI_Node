@@ -33,7 +33,7 @@ function testCreate(content) {
 
 	return new Promise((resolve, reject) => {
 		const nbFiles = countFile();
-		ContentModel.create(content, function(err) {
+		content.create(content, function(err) {
 			if (err) {
 				console.error(err);
 				return reject(err);
@@ -69,10 +69,10 @@ function testCreate(content) {
 
 function testRead(content) {
 	console.log("====== TEST READ =======");
-    console.dir(content);
+  console.dir(content);
 
 	return new Promise((resolve, reject) => {
-		ContentModel.read(content.id, function(err, data) {
+		content.read(content.id, function(err, data) {
 			if (err) {
 				console.error(err);
 				return reject(err);
@@ -92,7 +92,7 @@ function testUpdate(content) {
 	content.setData(newData);
 
 	return new Promise((resolve, reject) => {
-		ContentModel.update(content, function(err) {
+		content.update(content, function(err) {
 			if (err) {
 				console.error(err);
 				return reject(err);
@@ -118,7 +118,7 @@ function testDelete(content) {
 
 	return new Promise((resolve, reject) => {
         const nbFiles = countFile();
-		ContentModel.delete(content.id, function(err) {
+		content.delete(content.id, function(err) {
 			if (err) {
 				console.error(err);
 				return reject(err);
@@ -137,7 +137,7 @@ function testDelete(content) {
 
 function testErr(content) {
 	console.log("====== TEST ERROR =======");
-	var contentTest = new ContentModel(12);
+	var contentTest = new ContentModel();
 	console.dir(contentTest);
 
 	return testCreate(12)
@@ -176,11 +176,21 @@ function logError(err) {
 	console.error("<<< ERROR");
 }
 
+function testsOK(data) {
+	console.log("========== TESTS PHASE 1 : OK ==========");
+	return data;
+}
+
+function testsKO(err) {
+		logError(err);
+		return Promise.reject(new Error("========== TESTS PHASE 1 : KO =========="));
+}
+
 (function() {
 	testCreate(content)
-		.then(testRead)
-		.then(testUpdate)
-		.then(testDelete)
+		.then(testRead(content))
+		.then(testUpdate(content))
+		.then(testDelete(content))
 		.then(function() {
 			console.log("========== TESTS PHASE 1 : OK ==========");
 			return content;
@@ -188,7 +198,7 @@ function logError(err) {
 			logError(err);
 			return Promise.reject(new Error("========== TESTS PHASE 1 : KO =========="));
 		})
-		.then(testErr)
+		/**.then(testErr(content))
 		.then(function() {
 			console.log("========== TESTS PHASE 2 : OK ==========");
 		}, function(err) {
@@ -198,5 +208,5 @@ function logError(err) {
 			console.log("========== FIN TESTS ==========");
 		}, function(err) {
 			console.log(err.message);
-		});
+		});*/
 })();
