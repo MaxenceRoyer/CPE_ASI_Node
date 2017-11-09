@@ -1,71 +1,73 @@
+"use strict";
+
 const fs = require('fs');
 var CONFIG = require("../../config.json");
 const contentDirectory = CONFIG.contentDirectory;
 
-/**
-* Creation Class
-*/
-function ContentModel (jsonObject) {
-    this.id = jsonObject.id;
-    this.type = jsonObject.type;
-    this.title = jsonObject.title;
-    this.src = jsonObject.src;
-    this.fileName = jsonObject.fileName;
-    var data = jsonObject.data;
-}
+class ContentModel {
 
-/**
-* Constructeur
-*/
-module.exports = function(param) {
-    return({
-        myInstance: new ContentModel(fs.readFileSync(filePath = contentDirectory + "/" + "62cf58dd-ecb1-495a-899c-b7c633fa1df7.meta.json"))
+  constructor(id, type, title, src, fileName) {
+    this.id = id;
+    this.type = type;
+    this.title = title;
+    this.src = src;
+    this.fileName = fileName;
+
+
+    this.getData = () => this._data;
+    this.setData = function(data) {
+      this._data = data;
+    }
+  }
+
+  create(content, callback) {
+    console.log(content);
+    if (content.type == "img") {
+      fs.writeFile(contentDirectory.concat(content.fileName), content._data, function (err) {
+          if (err) throw err;
+          console.log("[ContentModel] Write file (type img) " + contentDirectory.concat(content.fileName));
+
+          fs.writeFile(contentDirectory.concat("/").concat(content.id).concat(".meta.json"), JSON.stringify(content, null, 4), function (err) {
+            if (err) throw err;
+            console.log("[ContentModel] Write file " + contentDirectory.concat("/").concat(content.id).concat(".meta.json"));
+          });
+      });
+    } else {
+      fs.writeFile(contentDirectory.concat("/").concat(content.id).concat(".meta.json"), JSON.stringify(content, null, 4), function (err) {
+        if (err) throw err;
+        console.log("[ContentModel] Write file " + contentDirectory.concat("/").concat(content.id).concat(".meta.json"));
+      });
+    }
+  };
+
+  read(id, callback) {
+    fs.readFile(contentDirectory.concat("/").concat(id).concat(".meta.json"), function(err, data) {
+      if (err) throw err;
+      console.log("[ContentModel] Read file " + data);
+      return data;
     });
+  };
+
+  update(content, callback) {
+    fs.writeFile(contentDirectory.concat("/").concat(content.id).concat(".meta.json"), content.getData(), function(err) {
+      if (err) throw err;
+      console.log("[ContentModel] Update file " + contentDirectory.concat("/").concat(content.id).concat(".meta.json"));
+
+      if (content.type == "img" && content.getData().length > 0) {
+        fs.writeFile(contentDirectory.concat("/").concat(content.fileName), content.getData(), function(err) {
+          if (err) throw err;
+          console.log("[ContentModel] Update file " + contentDirectory.concat("/").concat(content.fileName));
+        });
+      }
+    });
+  }
+
+  delete(id, callback) {
+    fs.unlink(contentDirectory.concat("/").concat(id).concat(".meta.json"), function(err) {
+      if (err) throw err;
+      console.log("[ContentModel] Delete file " + contentDirectory.concat("/").concat(id).concat(".meta.json"));
+    });
+  };
 }
 
-/**
-* Create
-*/
-ContentModel.prototype.create = function(content, callback) {
-    this.fileName = content.data
-    return this.str;
-};
-
-/**
-* Read
-*/
-ContentModel.prototype.read = function(id, callback) {
-    
-    return this.str;
-};
-
-/**
-* Update
-*/
-ContentModel.prototype.update = function(content, callback) {
-    
-    return this.str;
-};
-
-/**
-* Delete
-*/
-ContentModel.prototype.delete = function(id, callback) {
-    
-    return this.str;
-};
-
-/**
-* GetData
-*/
-ContentModel.getData = function() {
-    
-    return data;
-};
-
-/**
-* SetData
-*/
-ContentModel.setData = function(data) {
-    this._data = data;
-};
+module.exports = ContentModel;
