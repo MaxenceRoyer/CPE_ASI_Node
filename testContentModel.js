@@ -9,7 +9,7 @@ var ContentModel = require("./app/models/content.model.js");
 var content = new ContentModel();
 
 content.id = utils.generateUUID();
-content.type = "myType";
+content.type = "img";
 content.title = "myTitle";
 content.fileName = content.id + ".txt";
 content.setData("It Works !");
@@ -178,9 +178,9 @@ function logError(err) {
 
 (function() {
 	testCreate(content)
-		.then(testRead)
-		.then(testUpdate)
-		.then(testDelete)
+		.then(testRead(content))
+		.then(testUpdate(content))
+		.then(testDelete(content))
 		.then(function() {
 			console.log("========== TESTS PHASE 1 : OK ==========");
 			return content;
