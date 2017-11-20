@@ -3,6 +3,7 @@
 const fs = require('fs');
 var CONFIG = require("../../config.json");
 const contentDirectory = CONFIG.contentDirectory;
+var utils = require("../utils/utils.js");
 
 class ContentModel {
 
@@ -20,52 +21,58 @@ class ContentModel {
     }
   }
 
-  create(content, callback) {
+  static create(content, callback) {
     console.log(content);
     if (content.type == "img") {
-      fs.writeFile(contentDirectory.concat(content.fileName), content._data, function (err) {
-          if (err) throw err;
-          console.log("[ContentModel] Write file (type img) " + contentDirectory.concat(content.fileName));
+      fs.writeFile(utils.getDataFilePath(content.fileName), content._data, function (err) {
+          if (err) callback(err);
+          console.log("[ContentModel] Write file (type img) " + utils.getDataFilePath(content.fileName));
 
-          fs.writeFile(contentDirectory.concat("/").concat(content.id).concat(".meta.json"), JSON.stringify(content, null, 4), function (err) {
-            if (err) throw err;
-            console.log("[ContentModel] Write file " + contentDirectory.concat("/").concat(content.id).concat(".meta.json"));
+          fs.writeFile(utils.getMetaFilePath(content.id), JSON.stringify(content, null, 4), function (err) {
+            if (err) callback(err);
+            console.log("[ContentModel] Write file " + utils.getMetaFilePath(content.id));
+
+            callback();
           });
       });
     } else {
-      fs.writeFile(contentDirectory.concat("/").concat(content.id).concat(".meta.json"), JSON.stringify(content, null, 4), function (err) {
-        if (err) throw err;
-        console.log("[ContentModel] Write file " + contentDirectory.concat("/").concat(content.id).concat(".meta.json"));
+      fs.writeFile(utils.getMetaFilePath(content.id), JSON.stringify(content, null, 4), function (err) {
+        if (err) callback(err);
+        console.log("[ContentModel] Write file " + utils.getMetaFilePath(content.id));
+        callback();
       });
     }
   };
 
-  read(id, callback) {
-    fs.readFile(contentDirectory.concat("/").concat(id).concat(".meta.json"), function(err, data) {
-      if (err) throw err;
-      console.log("[ContentModel] Read file " + data);
+  static read(id, callback) {
+    fs.readFile(utils.getMetaFilePath(content.id), function(err, data) {
+      if (err) callback(err);
+      console.log("[ContentModel] Read file data : " + data);
+      callback();
       return data;
     });
   };
 
-  update(content, callback) {
-    fs.writeFile(contentDirectory.concat("/").concat(content.id).concat(".meta.json"), content.getData(), function(err) {
-      if (err) throw err;
-      console.log("[ContentModel] Update file " + contentDirectory.concat("/").concat(content.id).concat(".meta.json"));
+  static update(content, callback) {
+    fs.writeFile(utils.getMetaFilePath(content.id), content.getData(), function(err) {
+      if (err) callback(err);
+      console.log("[ContentModel] Update file " + utils.getMetaFilePath(content.id));
 
       if (content.type == "img" && content.getData().length > 0) {
-        fs.writeFile(contentDirectory.concat("/").concat(content.fileName), content.getData(), function(err) {
-          if (err) throw err;
-          console.log("[ContentModel] Update file " + contentDirectory.concat("/").concat(content.fileName));
+        fs.writeFile(utils.getDataFilePath(content.fileName), content.getData(), function(err) {
+          if (err) callback(err);
+          console.log("[ContentModel] Update file " + utils.getDataFilePath(content.fileName));
+          callback();
         });
       }
     });
   }
 
-  delete(id, callback) {
-    fs.unlink(contentDirectory.concat("/").concat(id).concat(".meta.json"), function(err) {
-      if (err) throw err;
-      console.log("[ContentModel] Delete file " + contentDirectory.concat("/").concat(id).concat(".meta.json"));
+  static delete(id, callback) {
+    fs.unlink(utils.getMetaFilePath(content.id), function(err) {
+      if (err) callback(err);
+      console.log("[ContentModel] Delete file " + utils.getMetaFilePath(content.id));
+      callback();
     });
   };
 }
