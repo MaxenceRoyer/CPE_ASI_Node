@@ -13,7 +13,9 @@ var IOControllerModule = require("./app/controllers/io.controller.js");
 
 var app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(defaultRoute);
 app.use(presentationRoute);
 //app.use(contentRoute);
