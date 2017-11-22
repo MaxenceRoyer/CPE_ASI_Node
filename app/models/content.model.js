@@ -14,7 +14,6 @@ class ContentModel {
     this.src = src;
     this.fileName = fileName;
 
-
     this.getData = () => this._data;
     this.setData = function(data) {
       this._data = data;
@@ -22,7 +21,6 @@ class ContentModel {
   }
 
   static create(content, callback) {
-    console.log(content);
     if (content.type == "img") {
       fs.writeFile(utils.getDataFilePath(content.fileName), content._data, function (err) {
           if (err) callback(err);
@@ -45,13 +43,19 @@ class ContentModel {
   };
 
   static read(id, callback) {
-    fs.readFile(utils.getMetaFilePath(content.id), function(err, data) {
-      if (err) callback(err);
-      console.log("[ContentModel] Read file data : " + data);
-      callback();
-      return data;
+    utils.fileExists(utils.getMetaFilePath(id), function(err, call) {
+      if (err) {
+         console.log("[ContentModel] Error");
+         callback(err);
+      } else {
+        fs.readFile(utils.getMetaFilePath(id), function(err, data) {
+          if (err) callback(err);
+          console.log("[ContentModel] Read file data : " + data);
+          callback(null, data);
+        });
+      }
     });
-  };
+  }
 
   static update(content, callback) {
     fs.writeFile(utils.getMetaFilePath(content.id), content.getData(), function(err) {

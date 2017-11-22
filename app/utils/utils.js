@@ -16,12 +16,28 @@ this.generateUUID = function() {
 	return uuid;
 };
 
+// Method used to test if the file is a JSON
+this.validateJSON = function(filename, body) {
+  try {
+    if (filename.includes(".json")) {
+      var data = JSON.parse(body);
+      return data;
+    } else {
+      return false;
+    }
+  } catch(e) {
+    return false;
+  }
+}
+
 this.fileExists = function(path, callback) {
 	fs.stat(path, function(err, stat) {
 		if (err) {
+			console.log("[Utils] Error - file doesn't exists");
 			callback(err);
 		} else {
 			if (stat.isFile()) {
+				console.log("[Utils] NoError - file exists");
 				callback(null);
 			}
 		}
