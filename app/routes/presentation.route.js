@@ -97,13 +97,20 @@ router.route("/savePres")
         });
       } catch (err) {
         response.writeHead(400, { "Content-Type": "text/plain" });
-        response.end("contenuJSON is not JSON !");
+        var resultJSON = {"msg": "contenuJSON is not JSON !"};
+        response.write(JSON.stringify(resultJSON, null, 4));
+        response.end();
       }
 
       response.writeHead(200, { "Content-Type": "text/plain" });
-      response.end("Document [" + fileName + "] saved !");
+
+      var resultJSON = {"fileCreated": fileName};
+      response.write(JSON.stringify(resultJSON, null, 4));
+      response.end();
     } else {
       response.writeHead(400, { "Content-Type": "text/plain" });
-      response.end("Bad parameters.");
+      var resultJSON = {"msg": "Bad request !"};
+      response.write(JSON.stringify(resultJSON, null, 4));
+      response.end();
     }
   })
