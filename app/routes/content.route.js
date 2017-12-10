@@ -1,4 +1,4 @@
-/**'use strict';
+'use strict';
 var multer = require("multer");
 var express = require("express");
 var router = express.Router();
@@ -20,4 +20,4 @@ router.get("/contents/:contentId", contentController.read);
 router.param("contendId", function(req, res, next, id) {
   req.contendId = id;
   next();
-});*/
+});

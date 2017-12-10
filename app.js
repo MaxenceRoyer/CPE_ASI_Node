@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(defaultRoute);
 app.use(presentationRoute);
-//app.use(contentRoute);
+app.use(contentRoute);
 app.use("/admin", express.static(path.join(__dirname, "/public/admin")));
 app.use("/watch", express.static(path.join(__dirname, "/public/watch")));
 

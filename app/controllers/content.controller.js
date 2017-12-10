@@ -35,7 +35,7 @@ class ContentController {
       var stringJSON = "{";
       fs.readdir(presentationDirectory, function(err, files) {
         if (err) console.log(err);
-
+        var array_return = [];
         files.forEach(function(file) {
           var filePath = presentationDirectory + "/" + file,
               fileContent = fs.readFileSync(filePath);
@@ -45,20 +45,10 @@ class ContentController {
             console.log("--- Read file : " + filePath);
 
             let parseContent = JSON.parse(fileContent);
-
-            var valueToConcat = '"content'
-                                .concat(parseContent.id)
-                                .concat('.id')
-                                .concat('"')
-                                .concat(':')
-                                .concat('"')
-                                .concat(parseContent)
-                                .concat('"');
-
-            if (i != nb) {
-              valueToConcat += ",";
-            }
-            stringJSON += valueToConcat;
+            var fileContent = JSON.parse(fileContent);
+            var key = "content".concat(parseContent.id).concat(".id");
+            var valueToConcat = { [key]: parseContent};
+            array_return.push(valueToConcat);
           } else {
             console.log("--- Ignore file : " + filePath);
           }
@@ -67,10 +57,8 @@ class ContentController {
 
         // Response
         if (nb > 0) {
-          // Parse the result in JSON
-          var resultJSON = JSON.parse(stringJSON);
           response.writeHead(200, { "Content-Type": "application/json" });
-          response.write(JSON.stringify(resultJSON, null, 4));
+          response.write(JSON.stringify(array_return, null, 4));
           response.end();
         }
       });
@@ -128,19 +116,18 @@ class ContentController {
 
   // Read a ContentModel
   static read(request, response) {
-    console.log("GET /contents" + request.params.contentId);
+    console.log("GET /contents/" + request.params.contentId);
     ContentModel.read(request.params.contentId, function(err, call) {
-      call = JSON.parse(call);
-
       if (err) {
         response.writeHead(404, { "Content-Type": "application/json" });
         let jsonMessage = {"msg" : "File doesn't exists !"};
         response.write(JSON.stringify(jsonMessage, null, 4));
         response.end();
       } else {
+        call = JSON.parse(call);
         // Image
         if (call.type == 'img') {
-          response.sendFile();
+          response.sendFile(__dirname + call.fileName);
           response.end();
         } else if (request.query.json == 'true') { // MetaData
           response.writeHead(200, { "Content-Type": "application/json" });

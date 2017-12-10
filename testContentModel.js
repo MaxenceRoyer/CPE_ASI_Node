@@ -69,7 +69,7 @@ function testCreate(content) {
 
 function testRead(content) {
 	console.log("====== TEST READ =======");
-    console.dir(content);
+  console.dir(content);
 
 	return new Promise((resolve, reject) => {
 		ContentModel.read(content.id, function(err, data) {
@@ -187,8 +187,7 @@ function logError(err) {
 		}, function(err) {
 			logError(err);
 			return Promise.reject(new Error("========== TESTS PHASE 1 : KO =========="));
-		})
-		.then(testErr)
+		}).then(testErr)
 		.then(function() {
 			console.log("========== TESTS PHASE 2 : OK ==========");
 		}, function(err) {

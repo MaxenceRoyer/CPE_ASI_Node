@@ -26,9 +26,21 @@ var IOController = function(name) {
 
       socket.on("slidEvent", function(msg) {
         console.log("[SocketIO] : slidEvent, value received : " + msg);
-        /**if (msg.CMD == START || msg.CMD == END || msg.CMD == BEGIN || msg.CMD == PREV || msg.CMD == END) {
-          console.log(msg);
-        }*/
+        io.emit("currentSlidEvent", null);
+
+        if (msg.CMD == "START") {
+          // TO_DO
+        } else if (msg.CMD == "PAUSE") {
+          // TO_DO
+        } else if (msg.CMD == "END") {
+          // TO_DO
+        } else if (msg.CMD == "BEGIN") {
+          // TO_DO
+        } else if (msg.CMD == "PREV") {
+          // TO_DO
+        } else if (msg.CMD == "NEXT") {
+
+        }
       });
     });
   }

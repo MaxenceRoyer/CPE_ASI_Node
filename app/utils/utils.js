@@ -31,16 +31,14 @@ this.validateJSON = function(filename, body) {
 }
 
 this.fileExists = function(path, callback) {
-	fs.stat(path, function(err, stat) {
+	console.log(path);
+	fs.access(path, 	fs.constants.R_OK, function(err, stat) {
 		if (err) {
-			console.log("[Utils] Error - file doesn't exists");
-			callback(err);
-		} else {
-			if (stat.isFile()) {
-				console.log("[Utils] NoError - file exists");
-				callback(null);
-			}
+			console.log("[Utils] Error - file doesn't exists: " + path);
+			return callback(err);
 		}
+
+		return callback();
 	});
 };
 

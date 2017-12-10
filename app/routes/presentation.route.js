@@ -25,10 +25,9 @@ router.route("/loadPres")
         }
       });
 
-      // JSON for the answer
-      var stringJSON = "{";
       fs.readdir(presentationDirectory, function(err, files) {
         if (err) throw err;
+        var array_return = [];
 
         files.forEach(function(file) {
           i++;
@@ -37,30 +36,20 @@ router.route("/loadPres")
 
           if (validateJSON(filePath, fileContent)) {
             console.log("--- Read file : " + filePath);
-            var valueToConcat = '"pres'
-                                .concat(i)
-                                .concat('.id')
-                                .concat('"')
-                                .concat(':')
-                                .concat('"')
-                                .concat(JSON.parse(fileContent))
-                                .concat('"');
-            if (i != nb) {
-              valueToConcat += ",";
-            }
-            stringJSON += valueToConcat;
+            console.log(JSON.parse(fileContent));
+            var fileContent = JSON.parse(fileContent);
+            var key = "pres".concat(fileContent.id).concat(".id");
+            var valueToConcat = { [key]: fileContent};
+            array_return.push(valueToConcat);
           } else {
             console.log("--- Ignore file : " + filePath);
           }
         })
-        stringJSON += "}";
 
         // Response
         if (nb > 0) {
-          // Parse the result in JSON
-          var resultJSON = JSON.parse(stringJSON);
           response.writeHead(200, { "Content-Type": "application/json" });
-          response.write(JSON.stringify(resultJSON, null, 4));
+          response.write(JSON.stringify(array_return, null, 4));
           response.end();
         }
       })

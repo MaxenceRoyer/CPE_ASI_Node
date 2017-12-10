@@ -12,6 +12,9 @@
     <script>
       var socket = io();
       socket.emit("data_comm", "");
+      socket.on("currentSlidEvent", function () {
+        alert("data changed !");
+      });
     </script>
   </head>
   <body>

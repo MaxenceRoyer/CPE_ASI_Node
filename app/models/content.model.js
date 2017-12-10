@@ -18,6 +18,12 @@ class ContentModel {
     this.setData = function(data) {
       this._data = data;
     }
+
+    /**     let _data;
+        this.getData = () =>_data;
+        this.setData = function(data) {
+          _data = data;
+        } */
   }
 
   static create(content, callback) {
@@ -43,16 +49,14 @@ class ContentModel {
   };
 
   static read(id, callback) {
-    utils.fileExists(utils.getMetaFilePath(id), function(err, call) {
+    console.log(utils.getMetaFilePath(id));
+    utils.readFileIfExists(utils.getMetaFilePath(id), function(err, data) {
       if (err) {
          console.log("[ContentModel] Error");
          callback(err);
       } else {
-        fs.readFile(utils.getMetaFilePath(id), function(err, data) {
-          if (err) callback(err);
-          console.log("[ContentModel] Read file data : " + data);
-          callback(null, data);
-        });
+         console.log("[ContentModel] Read file data : " + data);
+         callback(null, data);
       }
     });
   }
@@ -73,9 +77,14 @@ class ContentModel {
   }
 
   static delete(id, callback) {
-    fs.unlink(utils.getMetaFilePath(content.id), function(err) {
+
+// TODO : Lire le content via son ID
+// - Supprimer si filename existe (data)
+// - Supprimer les meta
+
+    fs.unlink(utils.getMetaFilePath(id), function(err) {
       if (err) callback(err);
-      console.log("[ContentModel] Delete file " + utils.getMetaFilePath(content.id));
+      console.log("[ContentModel] Delete file " + utils.getMetaFilePath(id));
       callback();
     });
   };
